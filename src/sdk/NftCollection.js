@@ -1738,6 +1738,7 @@ function NftCollection() {
 									<button
 										className={"button-1-square button-arrow"}
 										onClick={() => {
+											isSaleAvailiable();
 											localStorage.setItem("nft-collection-step", 3);
 											setCurentCollectionStep(3);
 										}}
@@ -1779,7 +1780,8 @@ function NftCollection() {
 										onClick={saleAllNft}
 										className={collectionNotOnSale - collectionOnSale.length > 0 && depositSale.avail ? "button-3-square" : "hide"}
 									>
-										Sale <span>{" "} NFT’s</span>{" "}
+										Initiate Sale
+										{/* Sale {" "} <span>{" "} NFT’s</span>{" "} */}
 									</button>
 									<div
 										style={{textAlign: "center"}}

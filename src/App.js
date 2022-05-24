@@ -108,6 +108,7 @@ function App() {
 				return data.json();
 			})
 			.then(async (data) => {
+				console.log(data);
 				let nonUniqArr = [];
 
 				for (let i = 0; i < data.data.getRecipes.length; i++) {
@@ -116,6 +117,7 @@ function App() {
 					);
 				}
 				let uniqArr = [...new Set(nonUniqArr)];
+				console.log(uniqArr);
 
 				for (let i = 0; i < uniqArr.length; i++) {
 					// let tempAddr = uniqArr[i];
@@ -144,8 +146,10 @@ function App() {
 				}
 			});
 
+			console.log(urls);
+
 		let sales = await getUrlsData(urls);
-		// console.log("myData",sales)
+		console.log("myData",sales);
 		let tempCols = [];
 
 		for (let i = 0; i < sales.length; i++) {
