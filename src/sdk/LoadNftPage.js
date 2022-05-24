@@ -245,11 +245,11 @@ function LoadNftPage() {
 				localStorage.getItem("details") !== null
 			) {
 				changeError(
-					"projName",
+					"colName",
 					JSON.parse(localStorage.getItem("details")).projName,
 				);
 				changeError(
-					"colName",
+					"projName",
 					JSON.parse(localStorage.getItem("details")).projectName,
 				);
 				changeError(
@@ -901,6 +901,12 @@ function LoadNftPage() {
 										placeholder="Project Name"
 										className="input-settings"
 										value={projectName}
+										onBlur={() =>
+											projectName == "" ? setProjectName("No Name") : null
+										}
+										onFocus={() =>
+											projectName == "No Name" ? setProjectName("") : null
+										}
 										onChange={(event) => setProjectName(event.target.value)}
 									/>
 									{/* <span className="errMsg">Set project name</span> */}
@@ -915,6 +921,14 @@ function LoadNftPage() {
 											errorInput == "colName"
 												? "input-settings inputErr"
 												: "input-settings"
+										}
+										onBlur={() =>
+											collectionName == "" ? setCollectionName("No Name") : null
+										}
+										onFocus={() =>
+											collectionName == "No Name"
+											? setCollectionName("")
+											: null
 										}
 										onChange={(event) =>
 											changeError("colName", event.target.value)
@@ -934,6 +948,16 @@ function LoadNftPage() {
 											errorInput == "colDesc"
 												? "input-settings inputErr"
 												: "input-settings"
+										}
+										onBlur={() =>
+											projectDescription == ""
+											? setProjectDescription("No Description")
+											: null
+										}
+										onFocus={() =>
+											projectDescription == "No Description"
+											? setProjectDescription("")
+											: null
 										}
 										onChange={(event) =>
 											// changeError("colDesc", event.target.value);

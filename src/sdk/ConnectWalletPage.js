@@ -12,10 +12,10 @@ import {signerKeys} from "@tonclient/core";
 // import {DEXConnectorContract} from "./test net contracts/DEXConnector.js";
 // import {TONTokenWalletContract} from "../extensions/contracts/TONTokenWallet.js";
 
-import {DEXClientContract} from "./devnetNew/DEXClient.js";
-import {DEXRootContract} from "./devnetNew/DEXRoot.js";
-import {DEXConnectorContract} from "./devnetNew/DEXConnector.js";
-import {TONTokenWalletContract} from "./devnetNew/TONTokenWallet.js";
+// import {DEXClientContract} from "./devnetNew/DEXClient.js";
+// import {DEXRootContract} from "./devnetNew/DEXRoot.js";
+// import {DEXConnectorContract} from "./devnetNew/DEXConnector.js";
+// import {TONTokenWalletContract} from "./devnetNew/TONTokenWallet.js";
 //import {Loader} from "../components/Loader/Loader.js";
 
 const config = require("./config.json");

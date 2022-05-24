@@ -10,7 +10,10 @@
 	"contractNft": "dev-1646972874579-36142488542328",
 	"marketNftOld": "dev-1648581158866-16348149344133",
 	"marketNft": "market-nft.testnet",
+	"marketNft1": "",
 	"singleNFt": "dev-1649669626808-71116101604821",
+	"contractRootNftGenral1": "radiance_nft.testnet",
+	"contractRootNftGenral": "collection_nft.testnet",
 	"nearConfig": {
 		"networkId": "testnet",
 		"nodeUrl": "https://rpc.testnet.near.org",

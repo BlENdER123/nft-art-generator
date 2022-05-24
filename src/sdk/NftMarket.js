@@ -223,6 +223,8 @@ function NftMarket(props) {
 						});
 					});
 
+				}).catch((err)=>{
+					console.log(err);
 				});
 		}
 

@@ -221,6 +221,8 @@ function App() {
 					// 	token_id: data[i].token_id,
 					// 	addrCol: data[i].nft_contract_id
 					// })
+				}).catch((err)=>{
+					console.log(err);
 				});
 		}
 

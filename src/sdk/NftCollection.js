@@ -16,6 +16,8 @@ import {NFTStorage} from "nft.storage";
 const {
 	contractNft,
 	nearConfig,
+	singleNFt,
+	contractRootNftGenral,
 	contractRootNft,
 	marketNft,
 } = require("./config.json");
@@ -90,17 +92,37 @@ function NftCollection() {
 
 	const [isFullDescription, setIsFullDescription] = useState(false);
 
-	async function uploadToNFTStore() {
-		const token =
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGEwMTJGQWNhM0E5ZWQ0ZEI5MGY2ZmMzZUZFQTc1ZjBBMzZBNmE5MWUiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MTc1MTkzMTY2NiwibmFtZSI6Ik1hcmtldHBsYWNlMyJ9.O-UUNi9Q7D-qmqR-fWDFkYekFvpvCtyCl_7eGYqdtf8";
-		const nft = new NFTStorage({
-			endpoint: "https://api.nft.storage",
-			token,
+	const tokenStorage = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGEwMTJGQWNhM0E5ZWQ0ZEI5MGY2ZmMzZUZFQTc1ZjBBMzZBNmE5MWUiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTY1MTc1MTkzMTY2NiwibmFtZSI6Ik1hcmtldHBsYWNlMyJ9.O-UUNi9Q7D-qmqR-fWDFkYekFvpvCtyCl_7eGYqdtf8";
+	const nftStorage = new NFTStorage({
+		endpoint: "https://api.nft.storage",
+		token: tokenStorage,
+	});
+
+	async function uploadToNFTStoreSingle(item) {
+
+		const file = await dataURLtoFile(item);
+
+		console.log(file);
+
+		const cid = await nftStorage.store(
+			{
+				name: '1',
+				description: '1',
+				image: file,
+			});
+		console.log("NFTStorage CID Directory Hash", cid);
+
+		return new Promise((resolve, reject) => {
+			resolve(cid);
 		});
+	}
+
+	async function uploadToNFTStore() {
+		
 
 		const files = await filesToFileList(collection);
 
-		const directoryHashCID = await nft.storeDirectory(files);
+		const directoryHashCID = await nftStorage.storeDirectory(files);
 		console.log("NFTStorage CID Directory Hash", directoryHashCID);
 		// return await directoryHashCID;
 		return new Promise((resolve, reject) => {
@@ -157,11 +179,14 @@ function NftCollection() {
 			tempArr.push(tempArrImg);
 		}
 
+		console.log(tempArr);
+
 		return tempArr;
 	}
 
 	function getResize(img, width, height) {
 		return new Promise((resolve, reject) => {
+			console.log(img);
 			var image = new Image();
 			image.src = img;
 			// image.src = getSrc(img);
@@ -311,9 +336,9 @@ function NftCollection() {
 		) {
 			let addr = localStorage.getItem("addrCol");
 
-			if (addr == null || addr == undefined) {
-				return;
-			}
+			// if (addr == null || addr == undefined) {
+			// 	return;
+			// }
 	
 
 			window.tempContract = await new nearAPI.Contract(
@@ -358,6 +383,59 @@ function NftCollection() {
 
 					setCollectionMinted(tempCollectionMinted);
 				});
+		} else {
+			let addr = contractRootNftGenral;
+
+			// if (addr == null || addr == undefined) {
+			// 	return;
+			// }
+	
+
+			window.tempContract = await new nearAPI.Contract(
+				window.walletConnection.account(),
+				addr,
+				{
+					viewMethods: [
+						"nft_tokens",
+						"nft_supply_for_owner",
+						"nft_tokens_for_owner",
+						"nft_token",
+					],
+					// changeMethods: ["new"],
+					sender: window.walletConnection.getAccountId(),
+				},
+			);
+
+			// tempContract.nft_remaining_count({}).then((data)=>{
+			// 	console.log(data);
+			// 	setCollectionCount([data.total_mintable_tokens_count, data.token_matrix]);
+			// })
+
+			tempContract
+				.nft_tokens_for_owner({
+					account_id: window.walletConnection.getAccountId(),
+					from_index: "0",
+					limit: 100,
+				})
+				.then((data) => {
+					console.log(data);
+					let tempCollectionMinted = [];
+
+					for (let i = 0; i < data.length; i++) {
+						tempCollectionMinted.push({
+							img: "https://cloudflare-ipfs.com/ipfs/" + data[i].metadata.media,
+							name: data[i].metadata.title,
+							desc: data[i].metadata.description,
+							token_id: data[i].token_id,
+						});
+					}
+
+					console.log(tempCollectionMinted);
+
+					setCollectionCount([tempCollectionMinted.length, 0]);
+
+					setCollectionMinted(tempCollectionMinted);
+				});
 		}
 
 		isSaleAvailiable();
@@ -371,16 +449,14 @@ function NftCollection() {
 	useEffect(async () => {
 		console.log("UseEffect on sale");
 
+		
+
 		if (
 			localStorage.getItem("addrCol") !== undefined &&
 			localStorage.getItem("addrCol") !== null &&
 			localStorage.getItem("addrCol") !== ""
 		) {
 			let addr = localStorage.getItem("addrCol");
-
-			if (addr == null || addr == undefined) {
-				return;
-			}
 
 			fetch(
 				"https://helper.testnet.near.org/account/" + window.walletConnection.getAccountId() + "/likelyNFTs",
@@ -486,6 +562,113 @@ function NftCollection() {
 
 			setCollectionOnSale(tempCol);
 			
+		} else {
+
+			let addr = contractRootNftGenral;
+
+			fetch(
+				"https://helper.testnet.near.org/account/" + window.walletConnection.getAccountId() + "/likelyNFTs",
+				{
+					method: "get",
+					headers: {
+						"Content-Type": "application/json; charset=utf-8",
+						Connection: "keep-alive",
+					},
+				},
+			).then((data) => {
+				return data.json();
+			}).then(async (data) => {
+				console.log(data);
+
+				for(let i = 0; i < data.length; i++) {
+					if(data[i] == addr) {
+						console.log(i);
+
+						window.tempContract = await new nearAPI.Contract(
+							window.walletConnection.account(),
+							addr,
+							{
+								viewMethods: [
+									"nft_tokens",
+									"nft_supply_for_owner",
+									"nft_tokens_for_owner",
+								],
+								// changeMethods: ["new"],
+								sender: window.walletConnection.getAccountId(),
+							},
+						);
+
+						try {
+							await tempContract
+								.nft_tokens_for_owner({
+									account_id: window.walletConnection.getAccountId(),
+									from_index: "0",
+									limit: 100,
+								})
+								.then(async (data) => {
+									// console.log(data, data.length, "Сколько всего во владении");
+									setCollectionNotOnSale(data.length);
+								});
+						} catch {
+							console.log("error");
+						}
+
+					}
+				}
+			});
+
+			let tempCol = [];
+
+			window.contractMarket = await new nearAPI.Contract(
+				window.walletConnection.account(),
+				marketNft,
+				{
+					viewMethods: ["get_sales_by_owner_id"],
+					sender: window.walletConnection.getAccountId(),
+				},
+			);
+
+			contractMarket
+			.get_sales_by_owner_id({
+				account_id: window.walletConnection.getAccountId(),
+				from_index: "0",
+				limit: 200,
+			}).then(async (data) => {
+				console.log(data);
+				for(let i = 0; i < data.length; i++) {
+					if(data[i].nft_contract_id == addr) {
+
+						window.ContractCollection = await new nearAPI.Contract(
+							window.walletConnection.account(),
+							data[i].nft_contract_id,
+							{
+								viewMethods: [
+									"nft_tokens",
+									"nft_supply_for_owner",
+									"nft_tokens_for_owner",
+									"nft_token",
+								],
+								// changeMethods: ["new"],
+								sender: window.walletConnection.getAccountId(),
+							},
+						);
+
+						ContractCollection.nft_token({token_id: data[i].token_id}).then((data_token)=>{
+
+							tempCol.push({
+								img: "https://cloudflare-ipfs.com/ipfs/" + data_token.metadata.media,
+								name: data_token.metadata.title,
+								desc: data_token.metadata.description,
+								token_id: data_token.token_id,
+							});
+						})
+					}
+				}
+
+			});
+
+			setCollectionOnSale(tempCol);
+
 		}
 
 	}, [collectionOnSale]);
@@ -545,11 +728,13 @@ function NftCollection() {
 
 		let uniqFor = JSON.parse(localStorage.getItem("uniqFor"));
 
+
 		try {
 			setOwner(window.walletConnection.getAccountId());
 		} catch {
 			setOwner("Null");
 		}
+
 
 		let hashTrans = document.location.search.split("transactionHashes=")[1];
 
@@ -614,10 +799,12 @@ function NftCollection() {
 		let tempCollection = [];
 
 		setTimeout(() => {
+			console.log("TimeOUT");
 			const asyncFunction = async function () {
 				return await getResizeMany();
 			};
 			asyncFunction().then(async (res) => {
+				console.log(res);
 				let tempArr = [];
 				for (let i = 0; i < classArr.length; i++) {
 					let temp = classArr[i];
@@ -663,6 +850,8 @@ function NftCollection() {
 						height: localStorage.getItem("height"),
 					}).then((b64) => tempCollection.push(b64));
 				}
+
+				console.log(tempCollection);
 
 				setCollection(tempCollection);
 			});
@@ -729,6 +918,7 @@ function NftCollection() {
 	const [avatar, setAvatar] = useState();
 
 	const [loaderMult, setLoaderMult] = useState(false);
+	const [loaderMultGen, setLoaderMultGen] = useState(false);
 
 	async function connectNear() {
 		// Initializing connection to the NEAR DevNet.
@@ -817,11 +1007,15 @@ function NftCollection() {
 			return;
 		}
 
+		let addr;
+
 		if (
 			localStorage.getItem("addrCol") == null ||
 			localStorage.getItem("addrCol") == undefined
 		) {
-			return;
+			addr = contractRootNftGenral;
+		} else {
+			addr = localStorage.getItem("addrCol");
 		}
 
 		if (collectionMinted.length < 1) {
@@ -858,7 +1052,7 @@ function NftCollection() {
 
 		window.tempContract = await new nearAPI.Contract(
 			window.walletConnection.account(),
-			localStorage.getItem("addrCol"),
+			addr,
 			{
 				viewMethods: [
 					"nft_tokens",
@@ -927,7 +1121,7 @@ function NftCollection() {
 					const transaction = nearAPI.transactions.createTransaction(
 						walletConnection.getAccountId(),
 						nearAPI.utils.key_pair.PublicKey.fromString(pubKey),
-						localStorage.getItem("addrCol"),
+						addr,
 						nonce,
 						actionsTrans,
 						recentBlockHash,
@@ -956,6 +1150,111 @@ function NftCollection() {
 			console.log(err);
 		}
 		
+	}
+
+	async function multTransGen() {
+
+		setLoaderMultGen(true);
+
+		console.log(collection);
+
+		window.contractCollection = await new nearAPI.Contract(
+			window.walletConnection.account(),
+			contractRootNftGenral,
+			{
+				// View methods are read-only – tfey don't modify the state, but usually return some value
+				viewMethods: ["nft_total_supply"],
+				// Change methods can modify the state, but you don't receive the returned value when called
+				changeMethods: ["new", "nft_mint"],
+				// Sender is the account ID to initialize transactions.
+				// getAccountId() will return empty string if user is still unauthorized
+				sender: window.walletConnection.getAccountId(),
+			},
+		);
+
+		
+
+		// return;
+		
+
+
+		let pubKey = JSON.parse(keyStore.localStorage.undefined_wallet_auth_key).allKeys[0];
+
+		let status = await near.connection.provider.status();
+
+		const accessKey = await near.connection.provider.query(
+			`access_key/${window.walletConnection.getAccountId()}/${pubKey.toString()}`,
+			"",
+		);
+
+		const nonce = ++accessKey.nonce;
+
+		const recentBlockHash = nearAPI.utils.serialize.base_decode(
+			accessKey.block_hash,
+		);
+
+		let deployData = JSON.parse(localStorage.getItem("details"));
+
+		let actionsTrans = [];
+
+		for (let i = 0; i < collection.length; i++) {
+			let tempGas = "300000000000000" / collection.length;
+			console.log(i);
+			let tempHash = await uploadToNFTStoreSingle(collection[i]);
+
+				// console.log((parseInt(data)+i+1).toString());
+				let length = 30;
+				let result = "";
+				let characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+				let charactersLength = characters.length;
+				for (var k = 0; k < length; k++) {
+					result += characters.charAt(Math.floor(Math.random() * charactersLength));
+				}
+
+				actionsTrans.push(
+					nearAPI.transactions.functionCall(
+						"nft_mint",
+						{
+							token_id: "token-"+result,
+							metadata: {
+								title: deployData.projName,
+								description: deployData.projectDescription,
+								media: tempHash.data.image.href.split("ipfs://")[1],
+								creator: window.walletConnection.getAccountId(),
+							},
+							receiver_id: window.walletConnection.getAccountId(),
+						},
+						tempGas,
+						"8890000000000000000000",
+					),
+				);
+			
+		}
+
+		const transaction = await nearAPI.transactions.createTransaction(
+			walletConnection.getAccountId(),
+			nearAPI.utils.key_pair.PublicKey.fromString(pubKey),
+			contractRootNftGenral,
+			nonce,
+			actionsTrans,
+			recentBlockHash,
+		);
+
+		console.log(actionsTrans);
+
+		//TODO
+		setTimeout(async ()=>{
+			try {
+				const result = await walletConnection.requestSignTransactions([
+					transaction,
+				]);
+			} catch {
+				walletAccount.requestSignIn("", "Title");
+			}
+		},1000);
+
+		
+
 	}
 
 	async function multTrans() {
@@ -997,7 +1296,7 @@ function NftCollection() {
 						owner_id: window.walletConnection.getAccountId(),
 						metadata: {
 							spec: "nft-1.0.0",
-							name: deployData.projectName,
+							name: deployData.projName,
 							symbol: "RTEAM",
 							icon: "data:image/x-icon;base64,AAABAAEAEBAAAAEAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAQAABMLAAATCwAAAAAAAAAAAAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8Ap6alAKekngB+g5QAQV64OxtL7tclVPPPJFLw0hlM+/IbTfn0Fkr9+h5P9+guVMdsaoXWABobMgAAAAAA////AIODfgCck3MAX3S+VApE//8YTf//Klbr1RZK//8SR///GEv8/yNS8/kdT/j7E0j7+k919G8ZFhcAAAAAAP///wAVEyMALTdqKh1W//8QR///KFXrxh1M9+8LQ///J1Tt1CZU8sgcT/zoJVTz2x9M6+AbUv/6Jzh8QDMyNQD///8AsqmfADVa4aYDQP//G0z6/yRV/esgUvXhTG3YXnCDvgBKY68tIk/t0wdC//8XS///EEf9/yld//ZXY4wF////AHqT0hopWPjhEUb//xdM/f8sTd2YVXe8DGmFwABtgskAWWqRAFxjfQBCXLd0HVL89hhM/f8LRv//PFi5Yf///wAiUueGIVDz/iFQ9O8OSP//R1y0NW57ngBsgcAAaoDGAEdhsQCCjrwAh5TBACtW6cQdTfXqDkb//zFc9Jr///8AH1H/pRxN9f8wWOe5Az7//4qXw0zPwJcAu7GZAIaSwAAlVvsALF7/ACZX/x0dTvf0L1jmwR9P+f4ZTPew////ACpV7IoQR///JFL03yNS8uJfdsMyi5OtAJqdqwBYZp0AQGLlAGeB3ABpg98KFUn+/x9P9fMqVez3Gkz4r////wBJZ+VQD0f//xdK/f8ZTPfvNVbHVl9wtgCJkbcAOEyOAGJywQCLjZcAc4fFNxNH/f8SR///HU/5/Etp0Vn///8AgI+2BC1d/+8ORP//E0j9/xdL//86X+Wkgo67IU9ZfwBidMYAMlbVfxxM8d4cTvj4FUn//xRI9/tyfJAA////AE1JLwA2TIFMFFD//yNS9u8eT/bxEkj//y9Y5rQ2VcNzJFP21BBH//8lUe3VHE/6/QQ///8uVNiVgIWfAP///wAwL24ATEZsAENk1HsfVP/1JlPv1iNR8NYbTfjrFEv//w5G//8mU+/VJ1Pr0AA9//8gTvTV0NPnA97f8wD///8AXV3CAGJetgBhYocALFDFlRFL//8MRf//EUb9/xpN/P8WS///JFH27hBH//8iUOS3Z3qzCP///wD///8A////AFRUqwBYWbAAWFl/AGVthABngdIzK1PikyVV+dYYS/nuLlbjpipR149NcuJXb4PDAGV5pADy7/8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A//8AAOAPAADABwAAgAMAAIEBAAADwQAAB+EAAAfBAAAHwQAAB8EAAAGDAACAAwAAwAMAAOAHAADwHwAA//8AAA==",
 							base_uri: null,
@@ -1021,7 +1320,7 @@ function NftCollection() {
 						ipfs_path: res + "/",
 						extension: "png",
 						price: parseNearAmount(price.toString()),
-						nft_titles: deployData.projectName,
+						nft_titles: deployData.projName,
 						nft_descriptions: deployData.projectDescription,
 						creator: window.walletConnection.getAccountId(),
 					},
@@ -1255,6 +1554,7 @@ function NftCollection() {
 												: "button-1-square button-1-square-disabled"
 										}
 										onClick={activeButtons[1] ? multTrans : null}
+										style={{"marginBottom": "100px"}}
 									>
 										{loaderMult ? (
 											<div className="loader">
@@ -1269,63 +1569,164 @@ function NftCollection() {
 											</span>
 										)}
 									</button>
+
+
+									<div class="title">Skip & Mint some NFT’s</div>
+									{/* <div class="desc">
+									Smart-contract one-time fee ~8 NEAR (YYY USD) 
+									</div> */}
+									
+									<button
+										className={"button-1-square button-1-square-disabled button-arrow"}
+										onClick={()=>{
+											localStorage.setItem("addrCol", "");
+											localStorage.setItem("nft-collection-step", 2);
+											setCurentCollectionStep(2);
+										}}
+										
+									>
+										
+											<span>
+												Skip Publish Collection
+											</span>
+										
+										
+									</button>
 									
 								</>
 							) : null}
 							{curentCollectionStep == 2 ? (
 								<>
 									<div class="title">Mint your NFTs</div>
-									<div class="desc">
-										Set the number of NFTs you want to Mint
-									</div>
 
-									<div class="mint">
-										<input
-											type="number"
-											onChange={(ev) => {
-												setAmountMintNft(ev.target.value);
-											}}
-											value={amountMintNft}
-											min="1"
-										/>
-										<button
-											className="min"
-											onClick={() => {
-												setAmountMintNft(1);
-											}}
-										>
-											Min
-										</button>
-										<button
-											className="max"
-											onClick={() => {
-												setAmountMintNft(
-													collectionCount[1],
-												);
-											}}
-										>
-											Max
-										</button>
-									</div>
+									{
+										localStorage.getItem("addrCol") == "" || localStorage.getItem("addrCol") == undefined ?
+										<>
+											<div class="desc">
+												Starting NFTs to mint for yourself
+											</div>
 
-									<button
-										className={amountMintNft > collectionCount[1] || collectionCount[0] == 0 || collectionCount[1] == 0?"button-3-square button-1-square-disabled" : "button-3-square"}
-										onClick={() => {
-											mint_nft(amountMintNft);
-										}}
-									>
-										Mint{" "}
-										<span style={{"margin": "0px 8px","display": "flex","alignItems": "center", "justifyContent": "center"}}>
-											(
-											{(amountMintNft * 0.1 + amountMintNft * price).toFixed(1)}{" "}
-											<span className="near-sign" style={{"margin": "0px 8px", "width": "20px", "height": "20px"}}></span>
+											{/* <div class="mint">
+												<input
+													type="number"
+													onChange={(ev) => {
+														setAmountMintNft(ev.target.value);
+													}}
+													value={amountMintNft}
+													min="1"
+												/>
+												<button
+													className="min"
+													onClick={() => {
+														setAmountMintNft(1);
+													}}
+												>
+													Min
+												</button>
+												<button
+													className="max"
+													onClick={() => {
+														setAmountMintNft(
+															collectionCount[1],
+														);
+													}}
+												>
+													Max
+												</button>
+											</div> */}
 
-											NEAR)
-										</span>{" "}
-									</button>
-									<div style={{textAlign: "center"}} class="desc">
-										Estimated fee ~ 0.1 NEAR for each
-									</div>
+											<button
+												className={amountMintNft > collectionCount[1] || collectionCount[0] == 0 || collectionCount[1] == 0?"button-3-square button-1-square-disabled" : "button-3-square"}
+												onClick={() => {
+													// mint_nft(amountMintNft);
+													multTransGen();
+													
+												}}
+											>
+												{loaderMultGen ? (
+													<div className="loader">
+														<div></div>
+														<div></div>
+														<div></div>
+													</div>
+													):(
+														<>
+														Mint{" "}
+														<span style={{"margin": "0px 8px","display": "flex","alignItems": "center", "justifyContent": "center"}}>
+															(
+															{(amountMintNft * 0.1 + amountMintNft * price).toFixed(1)}{" "}
+															<span className="near-sign" style={{"margin": "0px 8px", "width": "20px", "height": "20px"}}></span>
+
+															NEAR)
+														</span>{" "}
+														</>
+												)}
+												
+											</button>
+
+											
+											<div style={{textAlign: "center"}} class="desc">
+												Estimated fee ~ 0.1 NEAR for each
+											</div>
+										</> :
+
+
+										<>
+											<div class="desc">
+												Set the number of NFTs you want to Mint
+											</div>
+
+											<div class="mint">
+												<input
+													type="number"
+													onChange={(ev) => {
+														setAmountMintNft(ev.target.value);
+													}}
+													value={amountMintNft}
+													min="1"
+												/>
+												<button
+													className="min"
+													onClick={() => {
+														setAmountMintNft(1);
+													}}
+												>
+													Min
+												</button>
+												<button
+													className="max"
+													onClick={() => {
+														setAmountMintNft(
+															collectionCount[1],
+														);
+													}}
+												>
+													Max
+												</button>
+											</div>
+
+											<button
+												className={amountMintNft > collectionCount[1] || collectionCount[0] == 0 || collectionCount[1] == 0?"button-3-square button-1-square-disabled" : "button-3-square"}
+												onClick={() => {
+													mint_nft(amountMintNft);
+												}}
+											>
+												Mint{" "}
+												<span style={{"margin": "0px 8px","display": "flex","alignItems": "center", "justifyContent": "center"}}>
+													(
+													{(amountMintNft * 0.1 + amountMintNft * price).toFixed(1)}{" "}
+													<span className="near-sign" style={{"margin": "0px 8px", "width": "20px", "height": "20px"}}></span>
+
+													NEAR)
+												</span>{" "}
+											</button>
+											<div style={{textAlign: "center"}} class="desc">
+												Estimated fee ~ 0.1 NEAR for each
+											</div>
+										</>
+									}
+
+									
 
 									<div
 										style={{opacity: "1", margin: "0px 0px 20px 0px"}}
@@ -1378,7 +1779,7 @@ function NftCollection() {
 										onClick={saleAllNft}
 										className={collectionNotOnSale - collectionOnSale.length > 0 && depositSale.avail ? "button-3-square" : "hide"}
 									>
-										Sale <span> NFT’s</span>{" "}
+										Sale <span>{" "} NFT’s</span>{" "}
 									</button>
 									<div
 										style={{textAlign: "center"}}
@@ -1548,9 +1949,9 @@ function NftCollection() {
 											<div class="img">
 												<img src={item} />
 											</div>
-											<div class="nameCol">{details.projectName}</div>
+											<div class="nameCol">{details.projName}</div>
 											<div class="name">
-												{details.projectName}&nbsp; #{index + 1}
+												{details.projName}&nbsp; #{index + 1}
 											</div>
 										</div>
 									);

@@ -10,6 +10,7 @@ const {
 	contractNft,
 	nearConfig,
 	contractRootNft,
+	contractRootNftGenral,
 	marketNft,
 } = require("./config.json");
 
@@ -274,6 +275,10 @@ function NftMarketNft() {
 				setIsOnSale(false);
 			});
 
+		if(addrCol == contractRootNftGenral) {
+			console.log("NOT Pack");
+		}
+
 		window.ContractCol = await new nearAPI.Contract(
 			window.walletConnection.account(),
 			addrCol,
@@ -377,7 +382,7 @@ function NftMarketNft() {
 								1000000000000000000000000,
 								tempPrice / (1000000000000000000000000).toString(),
 							);
-
+							
 							ContractCol.nft_remaining_count({}).then((creator)=>{
 								console.log(creator);
 								setNftInfo({
@@ -393,9 +398,22 @@ function NftMarketNft() {
 									size: res.size / 1024 / 1024,
 									nameCollection: metadata.name,
 								});
-							})
-
-							
+							}).catch((err)=>{
+								console.log(err);
+								setNftInfo({
+									name: info.title,
+									desc: info.description,
+									// desc: "111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111",
+									img: mediaUrl,
+									owner: data.owner_id,
+									creator: data.metadata.creator,
+									price: tempPrice / 1000000000000000000000000,
+									width: tempW,
+									height: tempH,
+									size: res.size / 1024 / 1024,
+									nameCollection: metadata.name,
+								});
+							});
 
 							console.log(
 								data.owner_id,
@@ -408,6 +426,8 @@ function NftMarketNft() {
 
 			console.log(mediaUrl);
 			console.log(data);
+		}).catch((err)=>{
+			error.log(err);
 		});
 
 		await fetch("https://helper.testnet.near.org/fiat", {

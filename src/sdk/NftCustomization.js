@@ -778,12 +778,29 @@ function NftCustomization() {
 									);
 								})}
 
-								<div className="grades">
+								{/* <div className="grades">
 									<span className="legendary">Legendary</span>
 									<span className="epic">Epic</span>
 									<span className="rare">Rare</span>
 									<span className="uncommon">Unusual</span>
 									<span className="common">Usual</span>
+								</div> */}
+								<div className="grades">
+									{[
+									"Legendary",
+									"Epic",
+									"Rare",
+									"Uncommon",
+									"Common",
+									].map((rarity, index) => (
+									<span
+										key={index}
+										onClick={() => changeRarityL(index)}
+										className={rarity.toLowerCase()}
+									>
+										{rarity}
+									</span>
+									))}
 								</div>
 							</div>
 
@@ -1024,13 +1041,31 @@ function NftCustomization() {
 												);
 											})}
 
-											<div className="grades">
+											{/* <div className="grades">
 												<span className="legendary">Legendary</span>
 												<span className="epic">Epic</span>
 												<span className="rare">Rare</span>
 												<span className="uncommon">Unusual</span>
 												<span className="common">Usual</span>
+											</div> */}
+											<div className="grades">
+												{[
+												"Legendary",
+												"Epic",
+												"Rare",
+												"Uncommon",
+												"Common",
+												].map((rarity, index) => (
+												<span
+													key={index}
+													onClick={() => changeRarity(index)}
+													className={rarity.toLowerCase()}
+												>
+													{rarity}
+												</span>
+												))}
 											</div>
+
 										</div>
 									</div>
 								);
