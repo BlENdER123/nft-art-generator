@@ -809,7 +809,7 @@ function NftCustomization() {
 						</div>
 
 						<div className="modal-constructor modal-constructor-position">
-							<div class="video-start">
+							<div className="video-start">
 								<span className="info"></span>Move layers to appropriate
 								position
 							</div>

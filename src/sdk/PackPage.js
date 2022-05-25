@@ -467,57 +467,57 @@ function PackPage() {
 			>
 				<Header activeCat={1}></Header>
 
-				<div class="construtors constructors-col">
-					<div class="container-header">
+				<div className="construtors constructors-col">
+					<div className="container-header">
 
-						<div class="modal-constructor modal-constructor-back">
+						<div className="modal-constructor modal-constructor-back">
 							<button
 								onClick={() => {
 									history.goBack();
 								}}
 							></button>
 						</div>
-						<div class="modal-constructor modal-constructor-param">
-							<div class="title">{collectionName}</div>
-							<div class="desc">
+						<div className="modal-constructor modal-constructor-param">
+							<div className="title">{collectionName}</div>
+							<div className="desc">
 								NFT art creator’s main goal is to invent, and using NFTour
 								artists
 							</div>
 
-							<div style={{margin: "0px 0px 40px 0px"}} class="owner">
-								<div class="avatar">H</div>
-								<div class="text">
+							<div style={{margin: "0px 0px 40px 0px"}} className="owner">
+								<div className="avatar">H</div>
+								<div className="text">
 									<span>Author</span>
 									{owner}
 									{/* {nft} */}
 								</div>
 							</div>
 
-							{/* <div class="desc">
-								<div class="title">Description</div>
+							{/* <div className="desc">
+								<div className="title">Description</div>
 								Description
-								<div class="hide">Show full description </div>
+								<div className="hide">Show full description </div>
 							</div> */}
 
-							<div style={{margin: "0px 0px 40px 0px"}} class="price">
-								<div class="subtitle">Mint Price</div>
-								<div class="near">
+							<div style={{margin: "0px 0px 40px 0px"}} className="price">
+								<div className="subtitle">Mint Price</div>
+								<div className="near">
 									<span></span>{" "}
-									<div class="price">
+									<div className="price">
 										{(mintPrice / 1000000000000000000000000).toFixed(1)} NEAR
 									</div>
 								</div>
 							</div>
 
-							<div style={{margin: "0px 0px 40px 0px"}} class="progress">
-								<div class="title">Minted</div>
-								<div class="bar">
+							<div style={{margin: "0px 0px 40px 0px"}} className="progress">
+								<div className="title">Minted</div>
+								<div className="bar">
 									<span style={{"width": (collectionCount[0]-collectionCount[1])/(collectionCount[0]/100)+"%"}}></span>
 								</div>
 								<span> {collectionCount[0]-collectionCount[1]}/{collectionCount[0]}</span>
 							</div>
 
-							<div class="mint">
+							<div className="mint">
 								<input
 									type="number"
 									onChange={(ev) => {
@@ -562,13 +562,13 @@ function PackPage() {
 									NEAR)
 								</span>{" "}
 							</button>
-							<div style={{textAlign: "center"}} class="desc">
+							<div style={{textAlign: "center"}} className="desc">
 								Estimated fee ~ 0.1 NEAR
 							</div>
 
 						</div>
-						<div class="modal-constructor modal-constructor-collection">
-							<div class="collection">
+						<div className="modal-constructor modal-constructor-collection">
+							<div className="collection">
 
 								{collectionMinted.map((item, index) => {
 									return (
@@ -576,11 +576,11 @@ function PackPage() {
 											key={"uniqueId" + index}
 											className="element"
 										>
-											<div class="img">
+											<div className="img">
 												<img src={item.img} />
 											</div>
-											<div class="nameCol">{item.desc}</div>
-											<div class="name">{item.name}</div>
+											<div className="nameCol">{item.desc}</div>
+											<div className="name">{item.name}</div>
 										</div>
 									);
 								})}

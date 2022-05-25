@@ -273,9 +273,9 @@ function NftMarket(props) {
 			>
 				<Header activeCat={2}></Header>
 
-				<div class="constructor-market">
-					<div class="container-header">
-						<div class="modal-constructor modal-constructor-filter">
+				<div className="constructor-market">
+					<div className="container-header">
+						<div className="modal-constructor modal-constructor-filter">
 							<div className="title-1">Marketplace</div>
 
 							<div className="title">
@@ -413,7 +413,7 @@ function NftMarket(props) {
 								</div>
 							</div> */}
 						</div>
-						<div class="modal-constructor modal-constructor-market">
+						<div className="modal-constructor modal-constructor-market">
 							<div className="grid">
 								{props.loader ? (
 									<div className="loader">
@@ -453,16 +453,16 @@ function NftMarket(props) {
 													}}
 													className="element"
 												>
-													{/* <div class="rarity">L</div> */}
-													<div class="img">
+													{/* <div className="rarity">L</div> */}
+													<div className="img">
 														<img src={item.icon} />
 													</div>
-													<div class="nameCol">
+													<div className="nameCol">
 														{item.nameCollection.substring(0, 40)}
 													</div>
-													<div class="name">{item.name.substring(0, 20)}</div>
-													<div class="subtitle">Price</div>
-													<div class="price">
+													<div className="name">{item.name.substring(0, 20)}</div>
+													<div className="subtitle">Price</div>
+													<div className="price">
 														<span></span> {item.price.toFixed(3)} NEAR
 													</div>
 												</div>

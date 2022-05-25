@@ -308,19 +308,7 @@ function LoadNftPage() {
 
 	// switching active picture
 	function setImgActive(index) {
-		let curImg = [];
-
-		for (let i = 0; i < curentImages.length; i++) {
-			let temp = curentImages[i];
-			if (i == curentLayer) {
-				temp = index;
-				curImg.push(index);
-			} else {
-				curImg.push(temp);
-			}
-		}
-
-		setCurentImages(curImg);
+		setCurentImages({...curentImages, [curentLayer]: index});
 	}
 
 	function deleteLayer(item) {
@@ -793,7 +781,7 @@ function LoadNftPage() {
 						<div className="modal-constructor modal-constructor-upload">
 							
 
-							<div class="video-start">
+							<div className="video-start">
 								Need Help? &nbsp;{" "}
 								<span onClick={() => setVideoPlay(true)}>
 									{" "}

@@ -103,13 +103,13 @@ function Steps({projectData}) {
                     history.push("/load-nft");
                 }}
             >
-                <div class="img"></div>
-                <div class="text">
-                    <div class="name">Step 1</div>
-                    <div class="desc">Upload images</div>
+                <div className="img"></div>
+                <div className="text">
+                    <div className="name">Step 1</div>
+                    <div className="desc">Upload images</div>
                 </div>
             </div>
-            <div class="line"></div>
+            <div className="line"></div>
             <div className={projectData.activeStep == 2 ?"step  step-hov step2  active" : "step  step-hov step2"}
                 onClick={() => {
                     if(projectData.activeStep == 1) {
@@ -122,13 +122,13 @@ function Steps({projectData}) {
                     }
                 }}
             >
-                <div class="img"></div>
-                <div class="text">
-                    <div class="name">Step 2</div>
-                    <div class="desc">Customize layers</div>
+                <div className="img"></div>
+                <div className="text">
+                    <div className="name">Step 2</div>
+                    <div className="desc">Customize layers</div>
                 </div>
             </div>
-            <div class="line"></div>
+            <div className="line"></div>
             <div className={[projectData.activeStep == 3 ?"step step3  active " : "step step3 ", checkSize()? " step-hov" : ""]}
                 onClick={() => {
                     if(projectData.activeStep == 1) {
@@ -146,10 +146,10 @@ function Steps({projectData}) {
                 }}
             
                 >
-                <div class="img"></div>
-                <div class="text">
-                    <div class="name">Step 3</div>
-                    <div class="desc">Create Collection</div>
+                <div className="img"></div>
+                <div className="text">
+                    <div className="name">Step 3</div>
+                    <div className="desc">Create Collection</div>
                 </div>
             </div>
         </>
@@ -357,24 +357,24 @@ function HeaderEditor({classArr, projectData, projectDataStep2, activeStep}) {
 			<div className="modal-constructor modal-constructor-layers ">
                 <div className="title-1">NFT Collection Editor</div>
 
-                <div class="steps mobile-steps">
+                <div className="steps mobile-steps">
                     <Steps projectData={{classArr, projectData, projectDataStep2, activeStep}} />
                 </div>
                
             </div>
 
             <div className="modal-constructor modal-constructor-position">
-                <div class="steps steps-desk">
+                <div className="steps steps-desk">
                     <Steps projectData={{classArr, projectData, projectDataStep2, activeStep}} />
                 </div>
                 
             </div>
 
             <div className="modal-constructor modal-constructor-settings">
-                <div class="import-buttons">
-                    <div onClick={newProject} class="new hint hint--top hint--small" aria-label="New project"
+                <div className="import-buttons">
+                    <div onClick={newProject} className="new hint hint--top hint--small" aria-label="New project"
 					 ></div>
-                    <div class="form-item hint--top hint--small" aria-label="Open project">
+                    <div className="form-item hint--top hint--small" aria-label="Open project">
                         <input
                             className="form-item__input"
                             type="file"
@@ -382,7 +382,7 @@ function HeaderEditor({classArr, projectData, projectDataStep2, activeStep}) {
                             accept=".json"
                             onChange={loadProject}
                         />
-                        <label class="form-item__label" for="files"></label>
+                        <label className="form-item__label" for="files"></label>
                     </div>
                     <div
                         onClick={!savedProject ? saveProject : undefined}

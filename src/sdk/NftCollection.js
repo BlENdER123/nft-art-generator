@@ -40,8 +40,8 @@ function NftsList(props) {
     return (
         <>
         <div className={props.curentCollectionStep == props.step ? "progress": "hide"}>
-			<div class="title">{props.title}</div>
-			<div class="bar">
+			<div className="title">{props.title}</div>
+			<div className="bar">
 				<span style={{"width": (props.progressBar[1])/(props.progressBar[0]/100) + "%"}}/>	
 			</div>
 			<span>
@@ -58,15 +58,15 @@ function NftsList(props) {
 						key={"uniqueId" + index}
 						className="element"
 					>
-						<div class="img">
+						<div className="img">
 							{item.img?
 								<img src={item.img} />:
 								<img src={item} />
 							}
 							
 						</div>
-						<div class="nameCol">{props.projectName}</div>
-						<div class="name">
+						<div className="nameCol">{props.projectName}</div>
+						<div className="name">
 							{props.projectName}&nbsp; #{index + 1}
 						</div>
 					</div>
@@ -1550,10 +1550,10 @@ function NftCollection() {
 			>
 				<Header activeCat={1}></Header>
 
-				<div class="construtors constructors-col">
-					<div class="container-header">
+				<div className="construtors constructors-col">
+					<div className="container-header">
 
-						<div class="modal-constructor modal-constructor-back">
+						<div className="modal-constructor modal-constructor-back">
 							<button
 								onClick={() => {
 									if (curentCollectionStep > 1) {
@@ -1568,12 +1568,12 @@ function NftCollection() {
 								}}
 							></button>
 						</div>
-						<div class="modal-constructor modal-constructor-param">
-						<div class="title-1">NFT Publisher</div>
+						<div className="modal-constructor modal-constructor-param">
+						<div className="title-1">NFT Publisher</div>
 							{curentCollectionStep == 1 ? (
 								<>
-									<div class="title">Publish collection into blockchain</div>
-									<div class="desc">
+									<div className="title">Publish collection into blockchain</div>
+									<div className="desc">
 									This will publish your collection and make it available for NFT Minting.
 									Once done, your published collection will be available for you or other users to Mint.
 									</div>
@@ -1584,13 +1584,13 @@ function NftCollection() {
 												? "button-1-square"
 												: "button-1-square button-1-square-disabled"
 										}
-										style={{margin: "0px 0px 00px 0px"}}
+										style={{margin: "0px 0px 10px 0px"}}
 										onClick={activeButtons[0] ? deployColectionNear : null}
 									>
 										I. Initialize Collection
 									</button>
 
-									<div style={{margin: "0px 0px 10px 0px"}} className="desc">
+									<div style={{margin: "0px 0px 15px 0px"}} className="desc">
 										Smart-contract one-time fee ~8 NEAR ({8*nearPrice} USD)
 									</div>
 
@@ -1618,8 +1618,8 @@ function NftCollection() {
 									</button>
 
 
-									<div class="title">Skip & Mint some NFT’s</div>
-									{/* <div class="desc">
+									<div className="title">Skip & Mint some NFT’s</div>
+									{/* <div className="desc">
 									Smart-contract one-time fee ~8 NEAR (YYY USD) 
 									</div> */}
 									
@@ -1644,16 +1644,16 @@ function NftCollection() {
 							) : null}
 							{curentCollectionStep == 2 ? (
 								<>
-									<div class="title">Mint your NFTs</div>
+									<div className="title">Mint your NFTs</div>
 
 									{
 										localStorage.getItem("addrCol") == "" || localStorage.getItem("addrCol") == undefined ?
 										<>
-											<div class="desc">
+											<div className="desc">
 												Starting NFTs to mint for yourself
 											</div>
 
-											{/* <div class="mint">
+											{/* <div className="mint">
 												<input
 													type="number"
 													onChange={(ev) => {
@@ -1712,18 +1712,18 @@ function NftCollection() {
 											</button>
 
 											
-											<div style={{textAlign: "center"}} class="desc">
+											<div style={{textAlign: "center"}} className="desc">
 												Estimated fee ~ 0.1 NEAR for each
 											</div>
 										</> :
 
 
 										<>
-											<div class="desc">
+											<div className="desc">
 												Set the number of NFTs you want to Mint
 											</div>
 
-											<div class="mint">
+											<div className="mint">
 												<input
 													type="number"
 													onChange={(ev) => {
@@ -1767,7 +1767,7 @@ function NftCollection() {
 													NEAR)
 												</span>{" "}
 											</button>
-											<div style={{textAlign: "center"}} class="desc">
+											<div style={{textAlign: "center"}} className="desc">
 												Estimated fee ~ 0.1 NEAR for each
 											</div>
 										</>
@@ -1777,7 +1777,7 @@ function NftCollection() {
 
 									<div
 										style={{opacity: "1", margin: "0px 0px 20px 0px"}}
-										class="desc"
+										className="desc"
 									>
 										If you choose not to Mint NFTs now, then you can always do it later from Marketplace &#8594; Collection page.
 									</div>
@@ -1797,8 +1797,8 @@ function NftCollection() {
 							) : null}
 							{curentCollectionStep == 3 ? (
 								<>
-									<div class="title">Sell NFTs on the Marketplace</div>
-									<div class="desc">
+									<div className="title">Sell NFTs on the Marketplace</div>
+									<div className="desc">
 										Put your new NFTs up for sale on the Marketplace
 									</div>
 
@@ -1806,7 +1806,7 @@ function NftCollection() {
 										className={collectionNotOnSale - collectionOnSale.length > 0 && depositSale.avail? "price-sale price" : "hide"}
 										style={{"margin-bottom":"20px"}}
 									>
-										<div class="title">Price</div>
+										<div className="title">Price</div>
 										<div className="price-input">
 											<input
 												value={salePrice}
@@ -1852,7 +1852,7 @@ function NftCollection() {
 
 									<div
 										style={{opacity: "1", margin: "0px 0px 10px 0px"}}
-										class="desc"
+										className="desc"
 									>
 										If you choose not to sell your NFTs now, don’t worry! All of your items are now available under Profile page.
 									</div>
@@ -1869,8 +1869,8 @@ function NftCollection() {
 								</>
 							) : null}
 						</div>
-						<div class="modal-constructor modal-constructor-collection">
-							<div class="steps steps-univ">
+						<div className="modal-constructor modal-constructor-collection">
+							<div className="steps steps-univ">
 								<div
 									className={
 										curentCollectionStep == 1
@@ -1882,13 +1882,13 @@ function NftCollection() {
 										setCurentCollectionStep(1);
 									}}
 								>
-									<div class="img"></div>
-									<div class="text">
-										<div class="name">Step 1</div>
-										<div class="desc">Publish collection</div>
+									<div className="img"></div>
+									<div className="text">
+										<div className="name">Step 1</div>
+										<div className="desc">Publish collection</div>
 									</div>
 								</div>
-								<div class="line"></div>
+								<div className="line"></div>
 								<div
 									className={
 										curentCollectionStep == 2
@@ -1900,13 +1900,13 @@ function NftCollection() {
 										setCurentCollectionStep(2);
 									}}
 								>
-									<div class="img"></div>
-									<div class="text">
-										<div class="name">Step 2</div>
-										<div class="desc">Mint your NFTs</div>
+									<div className="img"></div>
+									<div className="text">
+										<div className="name">Step 2</div>
+										<div className="desc">Mint your NFTs</div>
 									</div>
 								</div>
-								<div class="line"></div>
+								<div className="line"></div>
 								<div
 									className={
 										curentCollectionStep == 3
@@ -1919,39 +1919,39 @@ function NftCollection() {
 										setCurentCollectionStep(3);
 									}}
 								>
-									<div class="img"></div>
-									<div class="text">
-										<div class="name">Step 3</div>
-										<div class="desc">Sell NFTs on the Marketplace</div>
+									<div className="img"></div>
+									<div className="text">
+										<div className="name">Step 3</div>
+										<div className="desc">Sell NFTs on the Marketplace</div>
 									</div>
 								</div>
 							</div>
 
-							<div class="collection-info">
-								<div class="info-1">
-									<div class="title">Collection Name</div>
-									<div class="text">{details.projectName}</div>
-									<div class="title">Description</div>
-									<div class="text">{details.projectDescription}</div>
+							<div className="collection-info">
+								<div className="info-1">
+									<div className="title">Collection Name</div>
+									<div className="text">{details.projectName}</div>
+									<div className="title">Description</div>
+									<div className="text">{details.projectDescription}</div>
 								</div>
-								<div class="info-2">
-									<div class="owner">
-										<div class="avatar">H</div>
-										<div class="text">
+								<div className="info-2">
+									<div className="owner">
+										<div className="avatar">H</div>
+										<div className="text">
 											<span>Owner</span>
 											{owner}
 										</div>
 									</div>
-									<div class="price">
-										<div class="subtitle">Mint Price</div>
-										<div class="near">
-											<span></span> <div class="price">{price} NEAR</div>
+									<div className="price">
+										<div className="subtitle">Mint Price</div>
+										<div className="near">
+											<span></span> <div className="price">{price} NEAR</div>
 										</div>
 									</div>
 								</div>
 							</div>
 
-							<div class="button-4-square" onClick={exportToJson}>
+							<div className="button-4-square" onClick={exportToJson}>
 								<span></span>Save project
 							</div>
 

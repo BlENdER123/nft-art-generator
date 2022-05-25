@@ -44,9 +44,9 @@ function ImportButtons() {
 
 
     return (
-        <div class="import-buttons">
-            <div class="new" onClick={newProject}></div>
-            {/* <div class="import"></div> */}
+        <div className="import-buttons">
+            <div className="new" onClick={newProject}></div>
+            {/* <div className="import"></div> */}
             <Box className="import" type="button" component="label">
                 <input
                     type="file"
@@ -55,7 +55,7 @@ function ImportButtons() {
                     onChange={handleFile}
                 />
             </Box>
-            <div class="save"></div>
+            <div className="save"></div>
             
         </div>
     )

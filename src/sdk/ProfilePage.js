@@ -609,17 +609,17 @@ function ProfilePage() {
 			>
 				<Header activeCat={0}></Header>
 
-				<div class="profile">
-					<div class="container">
-						<div class="text">Profile</div>
+				<div className="profile">
+					<div className="container">
+						<div className="text">Profile</div>
 
-						<div class="addr">
+						<div className="addr">
 							<span>Address:</span> {addrUser}
 						</div>
 
-						<div class="nfts">
-							<div class="menu-nft">
-								<div class="menu-bar">
+						<div className="nfts">
+							<div className="menu-nft">
+								<div className="menu-bar">
 									<span
 										className={activeCat == 1 ? "active" : ""}
 										onClick={() => setActiveCat(1)}
@@ -641,7 +641,7 @@ function ProfilePage() {
 									</span> */}
 								</div>
 
-								{/* <button class="btn-main" onClick={reloadNft}>
+								{/* <button className="btn-main" onClick={reloadNft}>
 									Reload
 								</button> */}
 
@@ -659,12 +659,12 @@ function ProfilePage() {
 								className={activeCat == 0 ? "nft-category collect-nft" : "hide"}
 							>
 								{nftSale[0].image == "Null" ? (
-									<div class="null-nft">No NFT`s</div>
+									<div className="null-nft">No NFT`s</div>
 								) : (
 									nftSale.map((i) => {
 										return (
 											<div
-												class="nft"
+												className="nft"
 												onClick={() => {
 													history.push(
 														"/nft-market-nft/" +
@@ -674,12 +674,12 @@ function ProfilePage() {
 													);
 												}}
 											>
-												<div class="nft-image">
+												<div className="nft-image">
 													<img src={i.image} />
 												</div>
-												<div class="nft-content">
-													<div class="name">{i.name}</div>
-													<div class="name-nft">{i.name}</div>
+												<div className="nft-content">
+													<div className="name">{i.name}</div>
+													<div className="name-nft">{i.name}</div>
 												</div>
 											</div>
 										);
@@ -690,12 +690,12 @@ function ProfilePage() {
 								className={activeCat == 1 ? "nft-category collect-nft" : "hide"}
 							>
 								{nftCol[0].image == "Null" ? (
-									<div class="null-nft">No NFT`s</div>
+									<div className="null-nft">No NFT`s</div>
 								) : (
 									nftCol.map((i) => {
 										return (
 											<div
-												class="nft"
+												className="nft"
 												onClick={() => {
 													history.push(
 														"/nft-market-nft/" +
@@ -705,14 +705,14 @@ function ProfilePage() {
 													);
 												}}
 											>
-												<div class="nft-image">
+												<div className="nft-image">
 													<img
 														src={i.image} // "https://gateway.pinata.cloud/ipfs/"
 													/>
 												</div>
-												<div class="nft-content">
-													<div class="name">{i.name}</div>
-													<div class="name-nft">{i.name}</div>
+												<div className="nft-content">
+													<div className="name">{i.name}</div>
+													<div className="name-nft">{i.name}</div>
 													
 												</div>
 											</div>
@@ -723,7 +723,7 @@ function ProfilePage() {
 							<div
 								className={activeCat == 2 ? "nft-category collect-nft" : "hide"}
 							>
-								<div class="null-nft">No NFT`s</div>
+								<div className="null-nft">No NFT`s</div>
 							</div>
 						</div>
 					</div>
