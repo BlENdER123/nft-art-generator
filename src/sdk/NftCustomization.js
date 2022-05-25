@@ -4,6 +4,8 @@ import {HashRouter as Router, useHistory} from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
 import HeaderEditor from "./HeaderEditor";
+import DropDown from "./DropDown";
+import DoubleField from "./DoubleField";
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -848,225 +850,127 @@ function NftCustomization() {
 										key={"uniqueId" + index}
 										className={item.active ? "project-settings" : "hide"}
 									>
-										<div className="title">
-											Layer Properties{" "}
-											<span
-												className={accordionHidden[0] ? "hidden" : ""}
-												onClick={() => {
-													accordionChange(0);
-												}}
-											></span>
-										</div>
-										<div className="text">Edit element position</div>
-										<div className={accordionHidden[0] ? "hidden" : "setting"}>
-											<div className="inputs">
-												<div className="title-settings">Left Position</div>
-												<div className="title-settings">Right Position</div>
+										{/* <DropDown title={"Project details"} subtitle={"Add project name & description."} hint={"test"}>
+											<h1 onClick={()=>{alert(accordionHidden)}}>Hello</h1>
+										</DropDown> */}
+										<DropDown title={"Layer Properties"} subtitle={"Edit element position"} >
+											<DoubleField  firstField={["Left Position", changeXY.x > 0 || changeXY.x < 0 ? changeXY.x.toFixed() : 0]} secondField={["Right Position", changeXY.y > 0 || changeXY.y < 0 ? changeXY.y.toFixed() : 0]}/>
+											<div className={"setting"}>
+												
+												<div className="inputs">
+													<div
+														className={
+															curentLayer == classArr.length - 1
+																? "zIndex zIndex-dis"
+																: "zIndex"
+														}
+														onClick={() => {
+															curentLayer == classArr.length - 1
+																? null
+																: setZ(item, "+");
+														}}
+													>
+														Move to Front
+													</div>
+													<div
+														className={
+															curentLayer == 0 ? "zIndex zIndex-dis" : "zIndex"
+														}
+														onClick={() => {
+															curentLayer == 0 ? null : setZ(item, "-");
+														}}
+													>
+														Move to Back
+													</div>
+												</div>
+												
 											</div>
-											<div className="inputs">
-												<input
-													type="text"
-													placeholder="X:50"
-													value={
-														changeXY.x > 0 || changeXY.x < 0
-															? changeXY.x.toFixed()
-															: 0
-													}
-													onChange={(event) => setX(item, event)}
-													disabled
-												/>
+										</DropDown>
 
-												<input
-													type="text"
-													placeholder="Y:50"
-													value={
-														changeXY.y > 0 || changeXY.y < 0
-															? changeXY.y.toFixed()
-															: 0
-													}
-													onChange={(event) => setY(item, event)}
-													disabled
-												/>
-											</div>
-											<div className="inputs">
-												<div
-													className={
-														curentLayer == classArr.length - 1
-															? "zIndex zIndex-dis"
-															: "zIndex"
-													}
-													onClick={() => {
-														curentLayer == classArr.length - 1
-															? null
-															: setZ(item, "+");
-													}}
-												>
-													Move to Front
-												</div>
-												<div
-													className={
-														curentLayer == 0 ? "zIndex zIndex-dis" : "zIndex"
-													}
-													onClick={() => {
-														curentLayer == 0 ? null : setZ(item, "-");
-													}}
-												>
-													Move to Back
+										<DropDown title={"Size"} subtitle={"Element size"}>
+											<DoubleField  firstField={["Width (px)", classArr[curentLayer].sizes.width[curentImages[curentLayer]]]} secondField={["Height (px)", classArr[curentLayer].sizes.height[curentImages[curentLayer]]]}/>
+										</DropDown>
+										
+										<DropDown title={"Elements"} subtitle={"Uploaded elements"}>
+											<div className={"setting"}>
+												<div className="inputs">
+													{classArr[curentLayer].imgs.map((item, index) => {
+														return (
+															<div
+																key={"uniqueId" + index}
+																// className={"elem"}
+																className={
+																	curentImages[curentLayer] == index
+																		? "elem img-element img-element-active"
+																		: "elem img-element"
+																}
+																onClick={() => setImgActive(index)}
+															>
+																<img src={classArr[curentLayer].url[index]}></img>
+															</div>
+														);
+													})}
 												</div>
 											</div>
-											
-										</div>
-
-										<div className="title">
-											Size{" "}
-											<span
-												className={accordionHidden[1] ? "hidden" : ""}
-												onClick={() => {
-													accordionChange(1);
-												}}
-											></span>
-										</div>
-										<div className="text">Element size</div>
-										<div className={accordionHidden[1] ? "hidden" : "setting"}>
-											<div className="inputs">
-												<div className="title-settings">Width (px)</div>
-												<div className="title-settings">Height (px)</div>
-											</div>
-											<div className="inputs">
-												<div className="info">
-													{
-														classArr[curentLayer].sizes.width[
-															curentImages[curentLayer]
-														]
-													}
+										</DropDown>
+										
+										<DropDown title={"Element Settings"} subtitle={""}>
+											<div className={"setting"}>
+												<div className="title-settings">
+													Rarity{" "}
+													<span
+														aria-label="hint"
+														className="info hint--top"
+													></span>
 												</div>
-												<div className="info">
-													{
-														classArr[curentLayer].sizes.height[
-															curentImages[curentLayer]
-														]
-													}
-												</div>
-												{/* <input
-													type="text"
-													placeholder="150"
-													onChange={(event) =>
-														setCurentWidth(event.target.value)
-													}
-												/>
-												<input
-													type="text"
-													placeholder="125"
-													onChange={(event) => {
-														setCurentHeight(event.target.value);
-													}}
-												/> */}
-											</div>
-										</div>
-
-										<div className="title">
-											Elements{" "}
-											<div aria-label="hint" className="hint hint--top"></div>{" "}
-											<span
-												className={accordionHidden[2] ? "hidden" : ""}
-												onClick={() => {
-													accordionChange(2);
-												}}
-											></span>
-										</div>
-										<div className="text">Uploaded elements</div>
-										<div className={accordionHidden[2] ? "hidden" : "setting"}>
-											<div className="inputs">
 												{classArr[curentLayer].imgs.map((item, index) => {
 													return (
-														<div
+														<input
 															key={"uniqueId" + index}
-															// className={"elem"}
 															className={
 																curentImages[curentLayer] == index
-																	? "elem img-element img-element-active"
-																	: "elem img-element"
+																	? "rarity"
+																	: "hide"
 															}
-															onClick={() => setImgActive(index)}
-														>
-															<img src={classArr[curentLayer].url[index]}></img>
-														</div>
+															style={{
+																background:
+																	"linear-gradient(to right, #6333FF 0%, #6333FF " +
+																	classArr[curentLayer].rarity[index] * 25 +
+																	"%, #444444 " +
+																	classArr[curentLayer].rarity[index] * 25 +
+																	"%, #444444 100%)",
+															}}
+															type="range"
+															min="0"
+															max="4"
+															step="1"
+															value={classArr[curentLayer].rarity[index]}
+															onChange={() => changeRarity(event.target.value)}
+														/>
 													);
 												})}
-											</div>
-										</div>
 
-										<div className="title">
-											Element Settings{" "}
-											<span
-												className={accordionHidden[3] ? "hidden" : ""}
-												onClick={() => {
-													accordionChange(3);
-												}}
-											></span>
-										</div>
-										<div className="text"></div>
-										<div className={accordionHidden[3] ? "hidden" : "setting"}>
-											<div className="title-settings">
-												Rarity{" "}
-												<span
-													aria-label="hint"
-													className="info hint--top"
-												></span>
-											</div>
-											{classArr[curentLayer].imgs.map((item, index) => {
-												return (
-													<input
-														key={"uniqueId" + index}
-														className={
-															curentImages[curentLayer] == index
-																? "rarity"
-																: "hide"
-														}
-														style={{
-															background:
-																"linear-gradient(to right, #6333FF 0%, #6333FF " +
-																classArr[curentLayer].rarity[index] * 25 +
-																"%, #444444 " +
-																classArr[curentLayer].rarity[index] * 25 +
-																"%, #444444 100%)",
-														}}
-														type="range"
-														min="0"
-														max="4"
-														step="1"
-														value={classArr[curentLayer].rarity[index]}
-														onChange={() => changeRarity(event.target.value)}
-													/>
-												);
-											})}
+												<div className="grades">
+													{[
+													"Legendary",
+													"Epic",
+													"Rare",
+													"Uncommon",
+													"Common",
+													].map((rarity, index) => (
+													<span
+														key={index}
+														onClick={() => changeRarity(index)}
+														className={rarity.toLowerCase()}
+													>
+														{rarity}
+													</span>
+													))}
+												</div>
 
-											{/* <div className="grades">
-												<span className="legendary">Legendary</span>
-												<span className="epic">Epic</span>
-												<span className="rare">Rare</span>
-												<span className="uncommon">Unusual</span>
-												<span className="common">Usual</span>
-											</div> */}
-											<div className="grades">
-												{[
-												"Legendary",
-												"Epic",
-												"Rare",
-												"Uncommon",
-												"Common",
-												].map((rarity, index) => (
-												<span
-													key={index}
-													onClick={() => changeRarity(index)}
-													className={rarity.toLowerCase()}
-												>
-													{rarity}
-												</span>
-												))}
 											</div>
-
-										</div>
+										</DropDown>
+										
 									</div>
 								);
 							})}

@@ -5,6 +5,8 @@ import Header from "./Header";
 import Footer from "./Footer";
 import HeaderEditor from "./HeaderEditor";
 import ErrorModal from "./ErrorModal";
+import DropDown from "./DropDown";
+import DoubleField from "./DoubleField";
 
 import {useDispatch} from "react-redux";
 
@@ -884,158 +886,88 @@ function LoadNftPage() {
 						<div className="modal-constructor modal-constructor-settings">
 							
 							<div className="project-settings">
-								<div className="title">
-									Project details{" "}
-									<span
-										className={accordionHidden[0] ? "hidden" : ""}
-										onClick={() => {
-											accordionChange(0);
-										}}
-									></span>
-								</div>
-								<div className="text">Add project name & description.</div>
-								<div className={accordionHidden[0] ? "hidden" : "setting"}>
-									<div className="title-settings">Project Name</div>
-									<input
-										type="text"
-										placeholder="Project Name"
-										className="input-settings"
-										value={projectName}
-										onBlur={() =>
-											projectName == "" ? setProjectName("No Name") : null
-										}
-										onFocus={() =>
-											projectName == "No Name" ? setProjectName("") : null
-										}
-										onChange={(event) => setProjectName(event.target.value)}
-									/>
-									{/* <span className="errMsg">Set project name</span> */}
-								</div>
-								<div className={accordionHidden[0] ? "hidden" : "setting"}>
-									<div className="title-settings">Collection Name</div>
-									<input
-										type="text"
-										placeholder="No Name"
-										value={collectionName}
-										className={
-											errorInput == "colName"
-												? "input-settings inputErr"
-												: "input-settings"
-										}
-										onBlur={() =>
-											collectionName == "" ? setCollectionName("No Name") : null
-										}
-										onFocus={() =>
-											collectionName == "No Name"
-											? setCollectionName("")
-											: null
-										}
-										onChange={(event) =>
-											changeError("colName", event.target.value)
-										}
-									/>
-									<span className={errorInput == "colName" ? "errMsg" : "hide"}>
-										Set Collection Name
-									</span>
-								</div>
-								<div className={accordionHidden[0] ? "hidden" : "setting"}>
-									<div className="title-settings">Collection Description</div>
-									<textarea
-										type="text"
-										placeholder="Collection Description"
-										value={projectDescription}
-										className={
-											errorInput == "colDesc"
-												? "input-settings inputErr"
-												: "input-settings"
-										}
-										onBlur={() =>
-											projectDescription == ""
-											? setProjectDescription("No Description")
-											: null
-										}
-										onFocus={() =>
-											projectDescription == "No Description"
-											? setProjectDescription("")
-											: null
-										}
-										onChange={(event) =>
-											// changeError("colDesc", event.target.value);
-											setProjectDescription(event.target.value)
-										}
-									/>
-									<span className={errorInput == "colDesc" ? "errMsg" : "hide"}>
-										Set Collection Description
-									</span>
-								</div>
-								<div className="title">
-									Dimensions{" "}
-									<div
-										aria-label="The image resolution are picked from the first image you drag and drop. We expect all images to be the same resolution."
-										className="hint hint--top hint--large"
-									></div>{" "}
-									<span
-										className={accordionHidden[1] ? "hidden" : ""}
-										onClick={() => {
-											accordionChange(1);
-										}}
-									></span>
-								</div>
-								<div className="text">Canvas dimensions</div>
-								<div
-									className={
-										accordionHidden[1] ? "hidden" : "setting setting-grid"
-									}
-								>
-									{/* <div className="title-settings">Dimension (px)</div> */}
+								<DropDown title={"Project details"} subtitle={"Add project name & description."}>
 
-									<div class="dim-title">Width (px)</div>
-									<div class="dim-title">Height (px)</div>
-									<div className="dimensions">
-										<div>{width}</div>
-										{/* <input
+									<div className={"setting"}>
+										<div className="title-settings">Project Name</div>
+										<input
 											type="text"
-											placeholder={maxSize}
-											value={width}
+											placeholder="Project Name"
+											className="input-settings"
+											value={projectName}
+											onBlur={() =>
+												projectName == "" ? setProjectName("No Name") : null
+											}
+											onFocus={() =>
+												projectName == "No Name" ? setProjectName("") : null
+											}
+											onChange={(event) => setProjectName(event.target.value)}
+										/>
+										{/* <span className="errMsg">Set project name</span> */}
+									</div>
+									<div className={"setting"}>
+										<div className="title-settings">Collection Name</div>
+										<input
+											type="text"
+											placeholder="No Name"
+											value={collectionName}
 											className={
-												errorInput == "width"
-													? "input-settings inputL inputL1 inputErr"
-													: "input-settings inputL inputL1"
+												errorInput == "colName"
+													? "input-settings inputErr"
+													: "input-settings"
+											}
+											onBlur={() =>
+												collectionName == "" ? setCollectionName("No Name") : null
+											}
+											onFocus={() =>
+												collectionName == "No Name"
+												? setCollectionName("")
+												: null
 											}
 											onChange={(event) =>
-												changeError("width", event.target.value)
+												changeError("colName", event.target.value)
 											}
 										/>
-										<span className={errorInput == "width" ? "errMsg" : "hide"}>
-											Set width
-										</span> */}
+										<span className={errorInput == "colName" ? "errMsg" : "hide"}>
+											Set Collection Name
+										</span>
 									</div>
-
-									<div className="dimensions">
-										<div>{height}</div>
-										{/* <input
+									<div className={"setting"}>
+										<div className="title-settings">Collection Description</div>
+										<textarea
 											type="text"
-											placeholder={maxSize}
-											value={height}
+											placeholder="Collection Description"
+											value={projectDescription}
 											className={
-												errorInput == "height"
-													? "input-settings inputL inputErr"
-													: "input-settings inputL"
+												errorInput == "colDesc"
+													? "input-settings inputErr"
+													: "input-settings"
+											}
+											onBlur={() =>
+												projectDescription == ""
+												? setProjectDescription("No Description")
+												: null
+											}
+											onFocus={() =>
+												projectDescription == "No Description"
+												? setProjectDescription("")
+												: null
 											}
 											onChange={(event) =>
-												changeError("height", event.target.value)
+												// changeError("colDesc", event.target.value);
+												setProjectDescription(event.target.value)
 											}
 										/>
-										<span
-											className={errorInput == "height" ? "errMsg" : "hide"}
-										>
-											Set height
-										</span> */}
+										<span className={errorInput == "colDesc" ? "errMsg" : "hide"}>
+											Set Collection Description
+										</span>
 									</div>
-									{/* <button onClick={()=>setWidth(width+1)}>test1</button>
-									<button onClick={()=>console.log(width)}>test2</button> */}
-								</div>
 
+								</DropDown>
+								
+								<DropDown title={"Dimensions"} subtitle={"Canvas dimensions"} hint={"The image resolution are picked from the first image you drag and drop. We expect all images to be the same resolution."}>
+									<DoubleField  firstField={["Width (px)", width]} secondField={["Height (px)", height]}/>
+								</DropDown>
 								
 							</div>
 						</div>

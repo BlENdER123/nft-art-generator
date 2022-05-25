@@ -35,6 +35,50 @@ Object.defineProperty(window, "indexedDB", {
 		window.msIndexedDB,
 });
 
+function NftsList(props) {
+
+    return (
+        <>
+        <div className={props.curentCollectionStep == props.step ? "progress": "hide"}>
+			<div class="title">{props.title}</div>
+			<div class="bar">
+				<span style={{"width": (props.progressBar[1])/(props.progressBar[0]/100) + "%"}}/>	
+			</div>
+			<span>
+				{props.progressBar[0]}/
+				{props.progressBar[1]}
+			</span>
+		</div>
+		<div
+			className={props.curentCollectionStep == props.step ? "collection" : "hide"}
+		>
+			{props.collection.map((item, index) => {
+				return (
+					<div
+						key={"uniqueId" + index}
+						className="element"
+					>
+						<div class="img">
+							{item.img?
+								<img src={item.img} />:
+								<img src={item} />
+							}
+							
+						</div>
+						<div class="nameCol">{props.projectName}</div>
+						<div class="name">
+							{props.projectName}&nbsp; #{index + 1}
+						</div>
+					</div>
+				);
+			})}
+		</div>
+        </>
+    )
+
+
+}
+
 function NftCollection() {
 	let classArr = JSON.parse(localStorage.getItem("class"));
 
@@ -796,6 +840,7 @@ function NftCollection() {
 			setActiveButtons([true, false, false]);
 		}
 
+		// let tempCollection = {img:[]};
 		let tempCollection = [];
 
 		setTimeout(() => {
@@ -1011,7 +1056,8 @@ function NftCollection() {
 
 		if (
 			localStorage.getItem("addrCol") == null ||
-			localStorage.getItem("addrCol") == undefined
+			localStorage.getItem("addrCol") == undefined ||
+			localStorage.getItem("addrCol") == ""
 		) {
 			addr = contractRootNftGenral;
 		} else {
@@ -1147,6 +1193,7 @@ function NftCollection() {
 					
 				});
 		} catch(err) {
+			console.log(window.walletConnection.getAccountId(), addr);
 			console.log(err);
 		}
 		
@@ -1908,94 +1955,10 @@ function NftCollection() {
 								<span></span>Save project
 							</div>
 
-							<div className={curentCollectionStep == 1 ? "progress": "hide"}>
-								<div class="title">Collection generation process</div>
-								<div class="bar">
-									<span style={{"width": "100%"}}/>	
-								</div>
-								<span>
-									{JSON.parse(localStorage.getItem("uniqFor")).length}/
-									{JSON.parse(localStorage.getItem("uniqFor")).length}
-								</span>
-							</div>
-							<div className={curentCollectionStep == 2 ? "progress": "hide"}>
-								<div class="title">Collection minted</div>
-								<div class="bar">
-									<span style={{"width": (collectionCount[0]-collectionCount[1])/(collectionCount[0]/100)+"%"}}></span>
-								</div>
-								<span>
-									{collectionCount[0]-collectionCount[1]}/
-									{collectionCount[0]}
-								</span>
-							</div>
-							<div className={curentCollectionStep == 3 ? "progress": "hide"}>
-								<div class="title">Collection on sale</div>
-								<div class="bar">
-									<span style={{"width": (collectionOnSale.length)/(collectionNotOnSale/100)+"%"}}></span>
-								</div>
-								<span>
-									{collectionOnSale.length}/
-									{collectionNotOnSale}
-								</span>
-							</div>
+							<NftsList projectName={details.projName} collection={collection} title={"Collection generation process"} curentCollectionStep={curentCollectionStep} step={1} progressBar={[JSON.parse(localStorage.getItem("uniqFor")).length,JSON.parse(localStorage.getItem("uniqFor")).length]} />
+							<NftsList projectName={details.projName} collection={collectionMinted} title={"Collection minted"} curentCollectionStep={curentCollectionStep} step={2} progressBar={[collectionCount[0]-collectionCount[1],collectionCount[0]]} />
+							<NftsList projectName={details.projName} collection={collectionOnSale} title={"Collection on sale"} curentCollectionStep={curentCollectionStep} step={3} progressBar={[collectionOnSale.length,collectionNotOnSale]} />
 							
-							<div
-								className={curentCollectionStep == 1 ? "collection" : "hide"}
-							>
-								{collection.map((item, index) => {
-									return (
-										<div
-											key={"uniqueId" + index}
-											className="element"
-										>
-											<div class="img">
-												<img src={item} />
-											</div>
-											<div class="nameCol">{details.projName}</div>
-											<div class="name">
-												{details.projName}&nbsp; #{index + 1}
-											</div>
-										</div>
-									);
-								})}
-							</div>
-
-							<div className={curentCollectionStep == 2 ? "collection" : "hide"}>
-								{collectionMinted.map((item, index) => {
-									return (
-										<div
-											key={"uniqueId" + index}
-											className="element"
-										>
-											<div class="img">
-												<img src={item.img} />
-											</div>
-											<div class="nameCol">{item.desc}</div>
-											<div class="name">{item.name}</div>
-										</div>
-									);
-								})}
-							</div>
-
-							<div className={curentCollectionStep == 3 ? "collection" : "hide"}>
-								{collectionOnSale.map((item, index) => {
-									return (
-										<div
-											key={"uniqueId" + index}
-											className="element"
-										>
-											<div class="img">
-												<img src={item.img} />
-											</div>
-											<div class="nameCol">{item.desc}</div>
-											<div class="name">{item.name}</div>
-										</div>
-									);
-								})}
-							</div>
-
-
-
 						</div>
 					</div>
 				</div>

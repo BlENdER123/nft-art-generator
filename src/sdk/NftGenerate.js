@@ -5,6 +5,7 @@ import mergeImages from "merge-images";
 import Header from "./Header";
 import Footer from "./Footer";
 import HeaderEditor from "./HeaderEditor";
+import DropDown from "./DropDown";
 
 import {useDispatch, useSelector} from "react-redux";
 
@@ -685,38 +686,29 @@ function NftCustomization() {
 						</div>
 
 						<div className="modal-constructor modal-constructor-elements">
-							<div className="title">
-								Elements{" "}
-								<span
-									className={accordionHidden[2] ? "hidden" : ""}
-									onClick={() => {
-										accordionChange(2);
-									}}
-								></span>
-							</div>
-							<div className="text">Amount of elements</div>
-
-							<div className={accordionHidden[2] ? "hide" : "elements"}>
-								{/* <div className="elem leg">
-									<span>Legendary</span>100
+							<DropDown title={"Elements"} subtitle={"Amount of elements"}>
+								<div className={accordionHidden[2] ? "hide" : "elements"}>
+									{/* <div className="elem leg">
+										<span>Legendary</span>100
+									</div>
+									<div className="elem epic">
+										<span>Epic</span>200
+									</div>
+									<div className="elem rare">
+										<span>Rare</span>300
+									</div>
+									<div className="elem unus">
+										<span>Unusual</span>400
+									</div>
+									<div className="elem us">
+										<span>Usual</span>1000
+									</div> */}
+									<div className="elem us">
+										<span>Total</span>
+										{allComb}
+									</div>
 								</div>
-								<div className="elem epic">
-									<span>Epic</span>200
-								</div>
-								<div className="elem rare">
-									<span>Rare</span>300
-								</div>
-								<div className="elem unus">
-									<span>Unusual</span>400
-								</div>
-								<div className="elem us">
-									<span>Usual</span>1000
-								</div> */}
-								<div className="elem us">
-									<span>Total</span>
-									{allComb}
-								</div>
-							</div>
+							</DropDown>
 
 						</div>
 					</div>

@@ -196,7 +196,11 @@ function NftMarket(props) {
 						) {
 							mediaUrl = info.media;
 						} else {
-							mediaUrl = "https://cloudflare-ipfs.com/ipfs/" + info.media;
+							if(info.media.includes("ipfs/")){
+								mediaUrl = "https://cloudflare-ipfs.com/ipfs/" + info.media.split("ipfs/")[1];
+							} else {
+								mediaUrl = "https://cloudflare-ipfs.com/ipfs/" + info.media;
+							}
 						}
 					} catch {
 						mediaUrl = info.media;

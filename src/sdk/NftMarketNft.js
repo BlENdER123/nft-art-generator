@@ -649,7 +649,12 @@ function NftMarketNft() {
 				<Header activeCat={2}></Header>
 
 				<div class="container auction-sale">
-					<div className="back" onClick={() => history.goBack()}>
+					<div className="back" onClick={() => {
+						// console.log(document.referrer);
+						// console.log(history.goBack);
+						// console.log(location);
+						history.goBack();
+						}}>
 					</div>
 					<div class="img">
 						<div class="img">
