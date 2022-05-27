@@ -493,8 +493,6 @@ function NftCollection() {
 	useEffect(async () => {
 		console.log("UseEffect on sale");
 
-		
-
 		if (
 			localStorage.getItem("addrCol") !== undefined &&
 			localStorage.getItem("addrCol") !== null &&
@@ -1219,12 +1217,6 @@ function NftCollection() {
 			},
 		);
 
-		
-
-		// return;
-		
-
-
 		let pubKey = JSON.parse(keyStore.localStorage.undefined_wallet_auth_key).allKeys[0];
 
 		let status = await near.connection.provider.status();
@@ -1299,8 +1291,6 @@ function NftCollection() {
 				walletAccount.requestSignIn("", "Title");
 			}
 		},1000);
-
-		
 
 	}
 
@@ -1544,7 +1534,6 @@ function NftCollection() {
 
 	return (
 		<Router>
-			
 			<div
 				className={"App App2"}
 			>
@@ -1636,7 +1625,6 @@ function NftCollection() {
 											<span>
 												Skip Publish Collection
 											</span>
-										
 										
 									</button>
 									

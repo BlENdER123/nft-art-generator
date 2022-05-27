@@ -587,19 +587,6 @@ function NftCustomization() {
 		});
 	}
 
-	function accordionChange(index) {
-		let tempValue = [];
-		for (let i = 0; i < accordionHidden.length; i++) {
-			if (i == index) {
-				tempValue.push(!accordionHidden[i]);
-			} else {
-				tempValue.push(accordionHidden[i]);
-			}
-			console.log(accordionHidden[i]);
-		}
-		setAccordioHidden(tempValue);
-	}
-
 	function setImgActive(index) {
 		let curImg = [];
 
