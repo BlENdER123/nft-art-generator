@@ -245,10 +245,7 @@ function NftMarket(props) {
 	}, []);
 
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	function accordionChange(index) {
 		let tempValue = [];

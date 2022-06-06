@@ -5,7 +5,7 @@ function ErrorModal() {
 	
     const dispatch = useDispatch();
 
-    const modalState = useSelector(state => state.errorModal);
+    const modalState = useSelector(state => state.reducerError.errorModal);
 
     const closeError = () => {
         dispatch({type: "closeError", payload: ""});

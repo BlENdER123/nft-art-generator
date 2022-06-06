@@ -174,11 +174,7 @@ function NftMarketPack() {
 		}
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
-
+	
 	return (
 		<Router>
 			<div
@@ -186,7 +182,6 @@ function NftMarketPack() {
 					errorModal.hidden === true || connectWallet ? "error-bg" : "hide"
 				}
 			>
-				<span onClick={close}></span>
 			</div>
 			<div
 				className={

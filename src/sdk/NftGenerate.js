@@ -31,6 +31,7 @@ function NftCustomization() {
 		) {
 			setColPrice(localStorage.getItem("colPrice"));
 		}
+		localStorage.setItem("nft-collection-step", 1);
 	}, []);
 
 	let realSizes = JSON.parse(localStorage.getItem("realSizes"));
@@ -482,10 +483,7 @@ function NftCustomization() {
 		history.push("/nft-collection");
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	function accordionChange(index) {
 		let tempValue = [];

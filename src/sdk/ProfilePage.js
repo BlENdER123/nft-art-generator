@@ -504,9 +504,6 @@ function ProfilePage() {
 		await getHash();
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-	}
 
 	async function saleNft(nft) {
 
@@ -576,7 +573,11 @@ function ProfilePage() {
 				parseNearAmount("0.01"),
 			)
 			.catch((err) => {
-				alert("Connect Wallet");
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 
 		setSalePrice(0);

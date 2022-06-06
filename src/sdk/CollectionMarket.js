@@ -142,17 +142,13 @@ function CollectionMarket() {
 		history.push("/collection-market-pack/" + collection);
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>
 			<div
 				className={!mintNftData.hidden || connectWallet ? "error-bg" : "hide"}
 			>
-				<span onClick={close}></span>
 			</div>
 			<div
 				className={

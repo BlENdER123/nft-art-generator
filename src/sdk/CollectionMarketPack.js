@@ -161,10 +161,7 @@ function CollectionMarketPack() {
 		}
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>
@@ -173,7 +170,6 @@ function CollectionMarketPack() {
 					errorModal.hidden === true || connectWallet ? "error-bg" : "hide"
 				}
 			>
-				<span onClick={close}></span>
 			</div>
 			<div
 				className={

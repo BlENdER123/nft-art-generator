@@ -196,6 +196,11 @@ function NftMarketNft() {
 			)
 			.catch((err) => {
 				// alert("Connect Wallet");
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 
 		// setSalePrice(0);
@@ -271,7 +276,7 @@ function NftMarketNft() {
 				setIsOnSale(true);
 			})
 			.catch((err) => {
-				console.log(err, "160");
+				
 				setIsOnSale(false);
 			});
 
@@ -610,10 +615,7 @@ function NftMarketNft() {
 	}, []);
 
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+
 
 	async function buyNft() {
 		console.log(nftInfo.price, nftInfo.price.toString());
@@ -633,8 +635,11 @@ function NftMarketNft() {
 				"300000000000000",
 				data.sale_conditions,
 			).catch((err) => {
-				console.log(err);
-				walletAccount.requestSignIn("", "Title");
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 		});
 
@@ -653,6 +658,9 @@ function NftMarketNft() {
 						// console.log(document.referrer);
 						// console.log(history.goBack);
 						// console.log(location);
+
+						// console.log(window.history.back());
+
 						history.goBack();
 						}}>
 					</div>

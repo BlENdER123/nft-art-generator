@@ -250,11 +250,11 @@ function NftSingle() {
 				"17490000000000000000000000",
 			)
 			.catch((err) => {
-				setErrorModal({
-					hidden: true,
-					message: "Connect Wallet",
-					img: "",
-				});
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 	}
 	async function multTrans() {
@@ -950,10 +950,7 @@ function NftSingle() {
 		});
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>
@@ -962,7 +959,6 @@ function NftSingle() {
 					errorModal.hidden === true || connectWallet ? "error-bg" : "hide"
 				}
 			>
-				<span className={connectWallet ? "" : "hide"} onClick={close}></span>
 			</div>
 			<div
 				className={

@@ -553,10 +553,7 @@ function NftCustomizationSingle() {
 		}, 100);
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>
@@ -569,7 +566,6 @@ function NftCustomizationSingle() {
 					errorModal.hidden === true || connectWallet ? "error-bg" : "hide"
 				}
 			>
-				<span className={connectWallet ? "" : "hide"} onClick={close}></span>
 			</div>
 			<div
 				className={

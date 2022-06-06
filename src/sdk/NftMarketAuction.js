@@ -38,10 +38,7 @@ function NftMarketAuction() {
 		setCol(tempCol);
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>

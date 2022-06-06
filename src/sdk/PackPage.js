@@ -455,9 +455,7 @@ function PackPage() {
 		});
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-	}
+	
 
 	return (
 		<Router>

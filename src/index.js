@@ -13,40 +13,12 @@ import "./index.scss";
 import "bootstrap";
 import App from "./App";
 
-const defaultState = {
-	connectWallet: false,
-	errorModal: {
-		hidden: true,
-		message: ""
-	}
-};
-
 import {Buffer} from "buffer";
 global.Buffer = Buffer;
 
-const reducer = (state = defaultState, action) => {
-	switch (action.type) {
-		case "openConnect":
-			return {...state, connectWallet: true};
-		case "closeConnect":
-			return {...state, connectWallet: false};
+import { rootReducer } from "./sdk/lib/redux";
 
-		case "openError":
-			return {...state, errorModal: {
-				hidden: false,
-				message: action.payload
-			}};
-		case "closeError":
-			return {...state, errorModal: {
-				hidden: true,
-				message: ""
-			}};
-		default:
-			return state;
-	}
-};
-
-export const store = createStore(reducer);
+export const store = createStore(rootReducer);
 
 ReactDOM.render(
 	<Provider store={store}>
@@ -64,6 +36,9 @@ ReactDOM.render(
 					)}
 				>
 					{/* <React.StrictMode> */}
+					<button style={{"zIndex":"100"}} onClick={()=>{
+						console.log(store.getState().reducerEditor.projectState);
+					}}>LOG</button>
 					<App />
 					{/* </React.StrictMode> */}
 				</SnackbarProvider>

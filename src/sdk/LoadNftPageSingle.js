@@ -601,10 +601,7 @@ function LoadNftPageSingle() {
 	// 	});
 	// }
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>
@@ -615,7 +612,6 @@ function LoadNftPageSingle() {
 						: "hide"
 				}
 			>
-				<span className={connectWallet ? "" : "hide"} onClick={close}></span>
 			</div>
 			<div
 				className={

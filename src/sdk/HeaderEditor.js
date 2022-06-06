@@ -161,7 +161,22 @@ function HeaderEditor({classArr, projectData, projectDataStep2, activeStep}) {
 
     function newProject() {
 		history.push("/load-nft");
-		localStorage.clear();
+		// localStorage.clear();
+
+		localStorage.removeItem("sizeIndex");
+		localStorage.removeItem("width");
+		localStorage.removeItem("uniqFor");
+		localStorage.removeItem("nft-collection-step");
+		localStorage.removeItem("colPrice");
+		localStorage.removeItem("height");
+		localStorage.removeItem("curentLayer");
+		localStorage.removeItem("collectionName");
+		localStorage.removeItem("royalty");
+		localStorage.removeItem("realSizes");
+		localStorage.removeItem("details");
+		localStorage.removeItem("class");
+		localStorage.removeItem("nftAreaSize");
+
 		let deleteRequest = window.indexedDB.deleteDatabase("imgsStore");
 		location.reload();
 	}
@@ -252,7 +267,7 @@ function HeaderEditor({classArr, projectData, projectDataStep2, activeStep}) {
 							new Promise((resolve, reject) => {
 								console.log(i, j);
 								store.get(localClass[i].imgs[j]).onsuccess = (event) => {
-                                    console.log(event.target.result);
+                                    console.log(event.target);
 									localClass[i].url[j] = URL.createObjectURL(
 										event.target.result.value,
 									);
@@ -310,21 +325,41 @@ function HeaderEditor({classArr, projectData, projectDataStep2, activeStep}) {
 
 		setTimeout(() => {
 			console.log(idBlobObj);
-			const data = {
-				projectName: JSON.parse(localStorage.getItem("details")).projectName,
-				collectionName: JSON.parse(localStorage.getItem("details")).projName,
-				projectDescription: JSON.parse(localStorage.getItem("details")).projectDescription,
-				width: localStorage.getItem("width"),
-				height: localStorage.getItem("height"),
-				classArr: classArr,
-				indexedData: idBlobObj,
-			};
+			let data ;
+
+			try {
+				data = {
+					projectName: JSON.parse(localStorage.getItem("details")).projectName,
+					collectionName: JSON.parse(localStorage.getItem("details")).projName,
+					projectDescription: JSON.parse(localStorage.getItem("details")).projectDescription,
+					width: localStorage.getItem("width"),
+					height: localStorage.getItem("height"),
+					classArr: classArr,
+					indexedData: idBlobObj,
+				};
+			} catch {
+				data = {
+					projectName: "No Name",
+					collectionName: "No Name",
+					projectDescription: "No Description",
+					width: localStorage.getItem("width"),
+					height: localStorage.getItem("height"),
+					classArr: classArr,
+					indexedData: idBlobObj,
+				};
+			}
 
 			e.preventDefault();
 			const a = document.createElement("a");
 			const file = new Blob([JSON.stringify(data)], {type: "text/json"});
 			a.href = URL.createObjectURL(file);
-			a.download = JSON.parse(localStorage.getItem("details")).projectName + ".json";
+
+			try {
+				a.download = JSON.parse(localStorage.getItem("details")).projectName + ".json";
+			} catch {
+				a.download = "No Name.json";
+			}
+			
 			a.click();
 
 			URL.revokeObjectURL(a.href);

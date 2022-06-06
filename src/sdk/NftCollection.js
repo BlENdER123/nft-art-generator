@@ -351,6 +351,98 @@ function NftCollection() {
 		}
 	};
 
+	function saveProject(e) {
+		
+		let idBlobObj = {};
+
+		let tempArr = [];
+
+		const openRequest = window.indexedDB.open("imgsStore", 10);
+
+		openRequest.onsuccess = async (event) => {
+			const store = event.target.result
+				.transaction("imgs")
+				.objectStore("imgs");
+			store.getAll().onsuccess = (event) => {
+				console.log(event.target.result);
+				const store_data = event.target.result;
+
+				for (let i = 0; i < store_data.length; i++) {
+					let tempFile = store_data[i];
+
+					console.log(tempFile);
+					// tempFile.arrayBuffer().then((data)=>{
+					//   console.log(data);
+					// })
+
+					tempArr.push(tempFile);
+
+                    console.log(URL.createObjectURL(tempFile.value));
+
+					let reader = new FileReader();
+					reader.readAsDataURL(tempFile.value);
+					reader.onload = (e) => {
+						console.log(e.currentTarget.result);
+						let tempId = tempFile.id;
+						idBlobObj[tempId] = e.currentTarget.result;
+					};
+				}
+			};
+		};
+
+		setTimeout(() => {
+			console.log(idBlobObj);
+			let data ;
+
+			try {
+				data = {
+					projectName: JSON.parse(localStorage.getItem("details")).projectName,
+					collectionName: JSON.parse(localStorage.getItem("details")).projName,
+					projectDescription: JSON.parse(localStorage.getItem("details")).projectDescription,
+					width: localStorage.getItem("width"),
+					height: localStorage.getItem("height"),
+					classArr: classArr,
+					indexedData: idBlobObj,
+				};
+			} catch {
+				data = {
+					projectName: "No Name",
+					collectionName: "No Name",
+					projectDescription: "No Description",
+					width: localStorage.getItem("width"),
+					height: localStorage.getItem("height"),
+					classArr: classArr,
+					indexedData: idBlobObj,
+				};
+			}
+
+			e.preventDefault();
+			const a = document.createElement("a");
+			const file = new Blob([JSON.stringify(data)], {type: "text/json"});
+			a.href = URL.createObjectURL(file);
+
+			try {
+				a.download = JSON.parse(localStorage.getItem("details")).projectName + ".json";
+			} catch {
+				a.download = "No Name.json";
+			}
+			
+			console.log(a);
+
+			a.click();
+
+			URL.revokeObjectURL(a.href);
+
+			// downloadFile({
+			// 	data: JSON.stringify(data),
+			// 	fileName: projectName + ".json",
+			// 	fileType: "text/json",
+			// });
+			// localStorage.setItem("projectStamp", projectStamp(classArr));
+			// setSavedProject(true);
+		}, 1000);
+	}
+
 	useEffect(async ()=>{
 
 		await fetch("https://helper.testnet.near.org/fiat", {
@@ -1028,12 +1120,19 @@ function NftCollection() {
 						deposit.toLocaleString("fullwide", {useGrouping: false}).toString(),
 					)
 					.catch((err) => {
-						console.log(err);
-						walletAccount.requestSignIn("", "Title");
+						if (err.name == "Error") {
+							walletAccount.requestSignIn("", "Title");
+						} else {
+							console.log(err);
+						}
 					});
 			})
-			.catch(() => {
-				walletAccount.requestSignIn("", "Title");
+			.catch((err) => {
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 	}
 
@@ -1183,8 +1282,12 @@ function NftCollection() {
 						const result = await walletConnection.requestSignTransactions([
 							transaction,
 						]);
-					} catch {
-						walletAccount.requestSignIn("", "Title");
+					} catch(err) {
+						if (err.name == "Error") {
+							walletAccount.requestSignIn("", "Title");
+						} else {
+							console.log(err);
+						}
 					}
 
 					
@@ -1287,8 +1390,12 @@ function NftCollection() {
 				const result = await walletConnection.requestSignTransactions([
 					transaction,
 				]);
-			} catch {
-				walletAccount.requestSignIn("", "Title");
+			} catch(err) {
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			}
 		},1000);
 
@@ -1379,8 +1486,12 @@ function NftCollection() {
 				const result = await walletConnection.requestSignTransactions([
 					transaction,
 				]);
-			} catch {
-				walletAccount.requestSignIn("", "Title");
+			} catch(err) {
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			}
 		});
 
@@ -1408,7 +1519,11 @@ function NftCollection() {
 				"7490000000000000000000000",
 			)
 			.catch((err) => {
-				walletAccount.requestSignIn("", "Title");
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 
 	}
@@ -1508,12 +1623,20 @@ function NftCollection() {
 						transaction,
 					]);
 				} catch (err) {
-					walletAccount.requestSignIn("", "Title");
+					if (err.name == "Error") {
+						walletAccount.requestSignIn("", "Title");
+					} else {
+						console.log(err);
+					}
 				}
 			})
 			.catch((err) => {
-				console.log(err);
-				walletAccount.requestSignIn("", "Title");
+				// console.log(err);
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 
 		tempContract.nft_remaining_count({}).then((data) => {
@@ -1528,10 +1651,7 @@ function NftCollection() {
 		});
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-	}
-
+	
 	return (
 		<Router>
 			<div
@@ -1939,7 +2059,7 @@ function NftCollection() {
 								</div>
 							</div>
 
-							<div className="button-4-square" onClick={exportToJson}>
+							<div className="button-4-square" onClick={saveProject}>
 								<span></span>Save project
 							</div>
 

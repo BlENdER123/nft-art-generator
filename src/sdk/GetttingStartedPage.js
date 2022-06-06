@@ -34,15 +34,11 @@ function GettingStarted() {
 		}
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	return (
 		<Router>
 			<div className={connectWallet ? "error-bg" : "hide"}>
-				<span onClick={close}></span>
 			</div>
 
 			<div className={videoPlay ? "video-player" : "hide"}>

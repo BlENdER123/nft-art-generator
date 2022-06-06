@@ -624,7 +624,11 @@ function NftMarketNft() {
 				parseNearAmount("0.01"),
 			)
 			.catch((err) => {
-				alert("Connect Wallet");
+				if (err.name == "Error") {
+					walletAccount.requestSignIn("", "Title");
+				} else {
+					console.log(err);
+				}
 			});
 
 		// setSalePrice(0);
@@ -663,10 +667,7 @@ function NftMarketNft() {
 		}
 	}
 
-	function close() {
-		dispatch({type: "closeConnect"});
-		console.log(connectWallet);
-	}
+	
 
 	async function buyNft() {
 		await ContractMarket.offer(
@@ -686,7 +687,6 @@ function NftMarketNft() {
 					errorModal.hidden === true || connectWallet ? "error-bg" : "hide"
 				}
 			>
-				<span onClick={close}></span>
 			</div>
 			<div
 				className={
